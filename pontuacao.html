@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Tabela de Pontuação</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        table { width: 100%; border-collapse: collapse; }
+        table, th, td { border: 1px solid black; }
+        th, td { padding: 10px; text-align: left; }
+        button { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Tabela de Pontuação</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Posição</th>
+                <th>Piloto</th>
+                <th>Pontuação</th>
+            </tr>
+        </thead>
+        <tbody id="pontuacaoTableBody">
+        </tbody>
+    </table>
+    <button onclick="voltarParaCadastro()">Voltar para Cadastro</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const pontuacoes = JSON.parse(localStorage.getItem('pontuacoes')) || {};
+            const tbody = document.getElementById('pontuacaoTableBody');
+
+            const pontuacoesArray = Object.keys(pontuacoes).map(piloto => {
+                return { piloto, pontos: pontuacoes[piloto] };
+            });
+
+            pontuacoesArray.sort((a, b) => b.pontos - a.pontos);
+
+            pontuacoesArray.forEach((pontuacao, index) => {
+                const row = tbody.insertRow();
+                row.insertCell(0).innerText = `${index + 1}º`;
+                row.insertCell(1).innerText = pontuacao.piloto;
+                row.insertCell(2).innerText = pontuacao.pontos;
+            });
+        });
+
+        function voltarParaCadastro() {
+            window.location.href = 'cadastro.html';
+        }
+    </script>
+</body>
+</html>
